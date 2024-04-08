@@ -22,7 +22,7 @@ function List() {
       <h2>Studies of the day</h2>
       <ul>
         {tasks.map((item, index) => (
-          <Item {...item} />
+          <Item key={index} {...item} />
         ))}
       </ul>
     </aside>
