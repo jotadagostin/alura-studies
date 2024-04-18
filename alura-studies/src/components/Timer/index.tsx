@@ -7,9 +7,10 @@ import style from "./Timer.module.scss";
 
 interface Props {
   selected: ITask | undefined;
+  finishTask: () => void;
 }
 
-export default function Timer({ selected }: Props) {
+export default function Timer({ selected, finishTask }: Props) {
   const [time, setTime] = useState<number>();
 
   useEffect(() => {
@@ -18,6 +19,16 @@ export default function Timer({ selected }: Props) {
     }
   }, [selected]);
 
+  function regressive(counter: number = 0) {
+    setTimeout(() => {
+      if (counter > 0) {
+        setTime(counter - 1);
+        return regressive(counter - 1);
+      }
+      finishTask();
+    }, 1000);
+  }
+
   return (
     <div className={style.timer}>
       <p className={style.title}>Choose a card and start the timer</p>
@@ -25,7 +36,7 @@ export default function Timer({ selected }: Props) {
       <div className={style.clockWrapper}>
         <Clock time={time} />
       </div>
-      <Button>Start!</Button>
+      <Button onClick={() => regressive(time)}>Start!</Button>
     </div>
   );
 }
